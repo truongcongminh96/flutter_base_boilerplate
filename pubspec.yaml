@@ -33,6 +33,9 @@ dependencies:
   flushbar: ^1.10.4
   intl: ^0.16.1
   get_it: ^5.0.6
+  catcher: ^0.4.0
+  fluttertoast: ^7.1.6
+  firebase_crashlytics: ^0.4.0+1
 
 
   # The following adds the Cupertino Icons font to your application.
