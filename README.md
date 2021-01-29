@@ -39,6 +39,7 @@ flutter packages pub run build_runner watch
 
 ### Libraries & Tools Used
 
+* [Catcher](https://pub.dev/packages/catcher)
 * [Dio](https://pub.dev/packages/dio)
 * [MobX](https://mobx.netlify.app/) (to connect the reactive data of your application with the UI)
 * [Provider](https://pub.dev/packages/provider) (State Management)
