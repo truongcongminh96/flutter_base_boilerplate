@@ -31,6 +31,14 @@ class _SplashPageState extends State<SplashPage> {
       reaction((fn) => themeStore.isDark, (isDark) {
         _scaffoldKey.currentState ??
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+        if (isDark) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('This is your dark mode!')));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('This is your light mode!')));
+        }
       })
     ];
   }
