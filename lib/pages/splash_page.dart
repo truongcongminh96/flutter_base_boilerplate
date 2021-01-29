@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_base_structure/pages/home/home.dart';
 import 'package:flutter_base_structure/stores/theme/theme_store.dart';
 import 'package:mobx/mobx.dart';
 
@@ -36,8 +37,8 @@ class _SplashPageState extends State<SplashPage> {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('This is your dark mode!')));
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('This is your light mode!')));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('This is your light mode!')));
         }
       })
     ];
@@ -81,7 +82,19 @@ class _SplashPageState extends State<SplashPage> {
                     : Icon(Icons.brightness_2),
                 onPressed: () {
                   themeStore.switchTheme();
-                })
+                }),
+            SizedBox(
+              height: 20,
+            ),
+            FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                },
+                child: Text('Get started'),
+                color: Colors.pinkAccent)
           ],
         ),
       ),
