@@ -1,71 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base_structure/models/user.dart';
+import 'package:flutter_base_structure/stores/user_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.transparent,
-        child: AppContainer(),
-      ),
+      body: UserList(),
     );
   }
 }
 
-class AppContainer extends StatefulWidget {
-  @override
-  _AppContainerState createState() => _AppContainerState();
-}
+class UserList extends StatelessWidget {
+  final UserStore store = UserStore();
 
-class _AppContainerState extends State<AppContainer> {
-  final List<String> menuItems = [
-    'Home',
-    'Blogger',
-    'Add New Post',
-    'Settings'
-  ];
-
-  final List<String> menuIcons = ['home', 'article', 'post_add', 'settings'];
+  UserList() {
+    store.getTheUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Stack(
-      children: [
-        Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  child: Text('Search Bar'),
-                ),
-                Container(
-                    child: Expanded(
-                  child: ListView.builder(
-                    itemCount: menuItems.length,
-                    itemBuilder: (context, index) => Container(
-                      child: Row(
-                        children: [
-                          Icon(Icons.add),
-                          Container(
-                            padding: EdgeInsets.all(20.0),
-                              child: Text(menuItems[index], style: TextStyle(
-                                fontSize: 16.0
-                              ))
-                          )
-                        ],
-                      ),
-                    ),
+    final future = store.userListFuture;
+    return Observer(
+      builder: (_) {
+        final List<User> users = future.result;
+        if (store.loading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return RefreshIndicator(
+            onRefresh: _refresh,
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final user = users[index];
+                return ListTile(
+                  onTap: () {},
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(user.avatar),
+                    radius: 25,
                   ),
-                )),
-                Container(
-                  child: Text('Log out'),
-                )
-              ],
-            ))
-      ],
-    ));
+                  title: Text(
+                    user.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    user.email,
+                    style: TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  trailing: Text(
+                    user.followers.toString(),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+      },
+    );
   }
+
+  Future _refresh() => store.fetchUsers();
 }
