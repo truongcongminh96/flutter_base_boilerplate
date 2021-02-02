@@ -18,7 +18,7 @@ abstract class _UserStore with Store {
   @action
   Future fetchUsers() {
     userListFuture = ObservableFuture(httpClient
-        .getData('https://reqres.in/api/users?page=1')
+        .getData()
         .then((users) => users));
 
     return userListFuture;

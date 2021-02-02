@@ -12,9 +12,28 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _buildAppBar(),
       body: UserList(),
     );
   }
+}
+
+Widget _buildAppBar() {
+  return AppBar(
+    title: Text('test'),
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.add_alert),
+        tooltip: 'Show Snackbar',
+        onPressed: () {},
+      ),
+      IconButton(
+        icon: const Icon(Icons.navigate_next),
+        tooltip: 'Next page',
+        onPressed: () {},
+      ),
+    ],
+  );
 }
 
 class UserList extends StatelessWidget {
